@@ -15,9 +15,8 @@ module.exports = {
     }
   },
   parserOptions: {
-    //指定ESLint可以解析JSX语法
-    parser: 'babel-eslint',
-    ecmaVersion: 8,
+    ecmaVersion: 'latest',
+    parser: '@typescript-eslint/parser',
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true

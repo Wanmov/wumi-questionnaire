@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { useTitle } from 'ahooks';
+import QuestionCard from '../../../components/QuestionCard';
 import styles from './index.module.scss';
-import QuestionCard from '../../components/QuestionCard';
 
 const rowQuestionList = [
   { _id: 'q1', title: '问卷1', isPublished: false, isStar: true, answerCount: 0, createAt: '3月10日 16:10' },
@@ -10,6 +11,7 @@ const rowQuestionList = [
 ];
 
 const List: React.FC = () => {
+  useTitle('乌米问卷 - 我的问卷');
   const [questionList, setQuestionList] = useState([...rowQuestionList]);
 
   return (
