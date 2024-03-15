@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Typography } from 'antd';
 import { useTitle } from 'ahooks';
 import QuestionCard from '../../../components/QuestionCard';
 import styles from './index.module.scss';
@@ -10,6 +11,8 @@ const rowQuestionList = [
   { _id: 'q4', title: '问卷4', isPublished: true, isStar: false, answerCount: 1, createAt: '4月10日 19:30' }
 ];
 
+const { Title } = Typography;
+
 const List: React.FC = () => {
   useTitle('乌米问卷 - 我的问卷');
   const [questionList, setQuestionList] = useState([...rowQuestionList]);
@@ -18,7 +21,7 @@ const List: React.FC = () => {
     <div>
       <div className={styles.header}>
         <div className={styles.title}>
-          <h3>我的问卷</h3>
+          <Title level={3}>我的问卷</Title>
         </div>
         <div className={styles.searchBox}>搜索</div>
       </div>
