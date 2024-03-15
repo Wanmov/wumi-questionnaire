@@ -1,0 +1,9 @@
+.container {
+  .header {
+    padding: 0 24px;
+  }
+
+  .mainContent {
+    min-height: calc(100vh - 64px - 65px);
+  }
+}
