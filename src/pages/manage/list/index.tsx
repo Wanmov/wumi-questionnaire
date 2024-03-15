@@ -3,6 +3,7 @@ import { Typography } from 'antd';
 import { useTitle } from 'ahooks';
 import QuestionCard from '../../../components/QuestionCard';
 import styles from './index.module.scss';
+import ListSearch from '../../../components/ListSearch';
 
 const rowQuestionList = [
   { _id: 'q1', title: '问卷1', isPublished: false, isStar: true, answerCount: 0, createAt: '3月10日 16:10' },
@@ -23,7 +24,9 @@ const List: React.FC = () => {
         <div className={styles.title}>
           <Title level={3}>我的问卷</Title>
         </div>
-        <div className={styles.searchBox}>搜索</div>
+        <div className={styles.searchBox}>
+          <ListSearch />
+        </div>
       </div>
       <div className={styles.listContainer}>
         {questionList.map((item) => {

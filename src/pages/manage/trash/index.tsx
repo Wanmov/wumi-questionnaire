@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from './index.module.scss';
 import { Button, Empty, Modal, Space, Table, Tag, Typography } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import ListSearch from '../../../components/ListSearch';
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -85,7 +86,9 @@ const Trash: React.FC = () => {
         <div className={styles.title}>
           <Title level={3}>星标问卷</Title>
         </div>
-        <div className={styles.searchBox}>搜索</div>
+        <div className={styles.searchBox}>
+          <ListSearch />
+        </div>
       </div>
       <div className={styles.listContainer}>
         {questionList.length > 0 ? TrashTable : <Empty description="暂无数据" />}

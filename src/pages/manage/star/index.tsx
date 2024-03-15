@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from './index.module.scss';
 import { Empty, Typography } from 'antd';
 import QuestionCard from '../../../components/QuestionCard';
+import ListSearch from '../../../components/ListSearch';
 
 const { Title } = Typography;
 
@@ -19,7 +20,9 @@ const Star: React.FC = () => {
         <div className={styles.title}>
           <Title level={3}>星标问卷</Title>
         </div>
-        <div className={styles.searchBox}>搜索</div>
+        <div className={styles.searchBox}>
+          <ListSearch />
+        </div>
       </div>
       <div className={styles.listContainer}>
         {questionList.length > 0 ? (
