@@ -4,11 +4,11 @@ import { PlusOutlined, BarsOutlined, StarOutlined, DeleteOutlined } from '@ant-d
 import styles from './index.module.scss';
 import { useMemo, useState } from 'react';
 import { createQuestion } from '../../services/question';
+import { useRequest } from 'ahooks';
 
 const ManageLayout: React.FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [loading, setLoading] = useState(false);
 
   const buttonType = useMemo(
     () => (path: string) => {
@@ -17,16 +17,12 @@ const ManageLayout: React.FC = () => {
     [pathname]
   );
 
-  const handleCreateClick = async () => {
-    setLoading(true);
-    const res = await createQuestion();
-    const { id } = res || {};
-    if (id) {
-      message.success('创建成功');
-      navigate(`/question/edit/${id}`);
+  const { loading, run: runCreateClick } = useRequest(createQuestion, {
+    manual: true,
+    onSuccess: (res) => {
+      navigate(`/question/edit/${res.id}`);
     }
-    setLoading(false);
-  };
+  });
 
   return (
     <div className={styles.container}>
