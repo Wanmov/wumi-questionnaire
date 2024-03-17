@@ -1,19 +1,15 @@
 import { useState } from 'react';
 import styles from './index.module.scss';
-import { Empty, Typography } from 'antd';
+import { Empty, Spin, Typography } from 'antd';
 import QuestionCard from '../../../components/QuestionCard';
 import ListSearch from '../../../components/ListSearch';
+import { useGetQuestionList } from '../../../hooks/useGetQuestionList';
 
 const { Title } = Typography;
 
-const rowQuestionList = [
-  { _id: 'q1', title: '问卷1', isPublished: false, isStar: true, answerCount: 0, createAt: '3月10日 16:10' },
-  { _id: 'q2', title: '问卷2', isPublished: true, isStar: true, answerCount: 5, createAt: '3月13日 17:20' },
-  { _id: 'q3', title: '问卷3', isPublished: false, isStar: true, answerCount: 3, createAt: '3月14日 18:15' }
-];
-
 const Star: React.FC = () => {
-  const [questionList, setQuestionList] = useState([...rowQuestionList]);
+  const { data = {}, loading } = useGetQuestionList({ isStar: true });
+  const { list = [], total = 0 } = data;
   return (
     <div>
       <div className={styles.header}>
@@ -25,8 +21,9 @@ const Star: React.FC = () => {
         </div>
       </div>
       <div className={styles.listContainer}>
-        {questionList.length > 0 ? (
-          questionList.map((item) => {
+        {loading && <Spin />}
+        {!loading && list.length > 0 ? (
+          list.map((item: any) => {
             const { _id } = item;
             return <QuestionCard key={_id} {...item} />;
           })

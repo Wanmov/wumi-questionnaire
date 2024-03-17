@@ -3,20 +3,16 @@ import styles from './index.module.scss';
 import { Button, Empty, Modal, Space, Table, Tag, Typography } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ListSearch from '../../../components/ListSearch';
+import { useGetQuestionList } from '../../../hooks/useGetQuestionList';
 
 const { Title } = Typography;
 const { confirm } = Modal;
 
-const rowQuestionList = [
-  { _id: 'q1', title: '问卷1', isPublished: false, isStar: true, answerCount: 0, createAt: '3月10日 16:10' },
-  { _id: 'q2', title: '问卷2', isPublished: true, isStar: false, answerCount: 5, createAt: '3月13日 17:20' },
-  { _id: 'q3', title: '问卷3', isPublished: false, isStar: true, answerCount: 3, createAt: '3月14日 18:15' },
-  { _id: 'q4', title: '问卷4', isPublished: true, isStar: false, answerCount: 1, createAt: '4月10日 19:30' }
-];
-
 const Trash: React.FC = () => {
-  const [questionList, setQuestionList] = useState([...rowQuestionList]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  const { data = {}, loading } = useGetQuestionList({ isStar: true });
+  const { list = [], total = 0 } = data;
 
   const columns = [
     {
@@ -65,7 +61,7 @@ const Trash: React.FC = () => {
       </div>
       <div style={{ border: '1px solid #e8e8e8' }}>
         <Table
-          dataSource={questionList}
+          dataSource={list}
           columns={columns}
           pagination={false}
           rowKey={(q) => q._id}
@@ -90,9 +86,7 @@ const Trash: React.FC = () => {
           <ListSearch />
         </div>
       </div>
-      <div className={styles.listContainer}>
-        {questionList.length > 0 ? TrashTable : <Empty description="暂无数据" />}
-      </div>
+      <div className={styles.listContainer}>{list.length > 0 ? TrashTable : <Empty description="暂无数据" />}</div>
       <div className={styles.footer}></div>
     </div>
   );

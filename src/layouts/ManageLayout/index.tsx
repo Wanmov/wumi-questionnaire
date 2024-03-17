@@ -28,7 +28,7 @@ const ManageLayout: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.left}>
         <Space direction="vertical">
-          <Button type="primary" size="large" icon={<PlusOutlined />} disabled={loading}>
+          <Button type="primary" size="large" icon={<PlusOutlined />} onClick={runCreateClick} disabled={loading}>
             新建问卷
           </Button>
           <Button
