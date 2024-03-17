@@ -4,6 +4,7 @@ import { Empty, Spin, Typography } from 'antd';
 import QuestionCard from '../../../components/QuestionCard';
 import ListSearch from '../../../components/ListSearch';
 import { useGetQuestionList } from '../../../hooks/useGetQuestionList';
+import Pagenation from '../../../components/Pagenation';
 
 const { Title } = Typography;
 
@@ -31,7 +32,9 @@ const Star: React.FC = () => {
           <Empty description="暂无数据" />
         )}
       </div>
-      <div className={styles.footer}></div>
+      <div className={styles.footer}>
+        <Pagenation total={total} />
+      </div>
     </div>
   );
 };
