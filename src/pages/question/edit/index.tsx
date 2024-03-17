@@ -1,7 +1,7 @@
-import { useParams } from 'react-router-dom';
+import { useGetQuestionInfo } from '../../../hooks/useGetQuestionInfo';
 
 const Edit: React.FC = () => {
-  const { id = '' } = useParams();
+  const { loading, questionInfo } = useGetQuestionInfo();
   return <></>;
 };
 

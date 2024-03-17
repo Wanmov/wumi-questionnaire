@@ -1,12 +1,14 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Button, Space } from 'antd';
+import { Button, Space, message } from 'antd';
 import { PlusOutlined, BarsOutlined, StarOutlined, DeleteOutlined } from '@ant-design/icons';
 import styles from './index.module.scss';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { createQuestion } from '../../services/question';
 
 const ManageLayout: React.FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [loading, setLoading] = useState(false);
 
   const buttonType = useMemo(
     () => (path: string) => {
@@ -15,11 +17,22 @@ const ManageLayout: React.FC = () => {
     [pathname]
   );
 
+  const handleCreateClick = async () => {
+    setLoading(true);
+    const res = await createQuestion();
+    const { id } = res || {};
+    if (id) {
+      message.success('创建成功');
+      navigate(`/question/edit/${id}`);
+    }
+    setLoading(false);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.left}>
         <Space direction="vertical">
-          <Button type="primary" size="large" icon={<PlusOutlined />}>
+          <Button type="primary" size="large" icon={<PlusOutlined />} disabled={loading}>
             新建问卷
           </Button>
           <Button
