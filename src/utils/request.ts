@@ -15,6 +15,14 @@ const service = axios.create({
   timeout: 5000
 });
 
+service.interceptors.request.use(
+  (config) => {
+    config.headers['Authorization'] = `Bearer ${localStorage.getItem('USER_TOKEN')}`;
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 service.interceptors.response.use((res) => {
   const resData = res.data;
   const { errno, data, msg } = resData;

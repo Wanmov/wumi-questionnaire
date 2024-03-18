@@ -1,13 +1,27 @@
-import { Button, Form, Input, Space, Typography } from 'antd';
+import { Button, Form, Input, Space, Typography, message } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import { LOGIN_PATHNAME } from '../../router/constans';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useRequest } from 'ahooks';
+import { registerUser } from '../../services/user';
 import styles from './index.module.scss';
 
 const { Title } = Typography;
 
 const Register: React.FC = () => {
-  const onFinish = () => {};
+  const navigate = useNavigate();
+
+  const { run: runRegister } = useRequest(registerUser, {
+    manual: true,
+    onSuccess: () => {
+      message.success('注册成功');
+      navigate(LOGIN_PATHNAME);
+    }
+  });
+
+  const onFinish = (values: any) => {
+    runRegister({ ...values });
+  };
 
   return (
     <div className={styles.container}>

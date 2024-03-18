@@ -1,7 +1,11 @@
-import { Button, Checkbox, Form, Input, Space, Typography } from 'antd';
+import { Button, Checkbox, Form, Input, Space, Typography, message } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
-import { REGISTER_PATHNAME } from '../../router/constans';
-import { Link } from 'react-router-dom';
+import { MANAGE_INDEX_PATHNAME, REGISTER_PATHNAME } from '../../router/constans';
+import { Link, useNavigate } from 'react-router-dom';
+import { useRequest } from 'ahooks';
+
+import { login } from '../../services/user';
+import { useEffect } from 'react';
 import styles from './index.module.scss';
 
 const { Title } = Typography;
@@ -9,7 +13,35 @@ const { Title } = Typography;
 const Login: React.FC = () => {
   const [form] = Form.useForm();
 
-  const onFinish = () => {};
+  useEffect(() => {
+    const username = localStorage.getItem('USERNAME');
+    const password = localStorage.getItem('PASSWORD');
+    form.setFieldsValue({ username, password });
+  }, []);
+
+  const navigate = useNavigate();
+
+  const { run: runLogin } = useRequest(login, {
+    manual: true,
+    onSuccess: (res) => {
+      const { token = '' } = res;
+      localStorage.setItem('USER_TOKEN', token);
+      message.success('登录成功');
+      navigate(MANAGE_INDEX_PATHNAME);
+    }
+  });
+
+  const onFinish = (values: any) => {
+    const { username, password, remember } = values;
+    runLogin({ username, password });
+    if (remember) {
+      localStorage.setItem('USERNAME', username);
+      localStorage.setItem('PASSWORD', username);
+    } else {
+      localStorage.removeItem('USERNAME');
+      localStorage.removeItem('PASSWORD');
+    }
+  };
 
   return (
     <div className={styles.container}>
