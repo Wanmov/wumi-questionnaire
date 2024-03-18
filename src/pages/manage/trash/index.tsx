@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import styles from './index.module.scss';
-import { Button, Empty, Modal, Space, Table, Tag, Typography } from 'antd';
+import { Button, Empty, Modal, Space, Table, Tag, Typography, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ListSearch from '../../../components/ListSearch';
 import { useGetQuestionList } from '../../../hooks/useGetQuestionList';
+import { useRequest } from 'ahooks';
+import { deleteQuestion, updateQuestionState } from '../../../services/question';
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -11,7 +13,7 @@ const { confirm } = Modal;
 const Trash: React.FC = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-  const { data = {}, loading } = useGetQuestionList({ isStar: true });
+  const { data = {}, loading, refresh } = useGetQuestionList({ isStar: true });
   const { list = [], total = 0 } = data;
 
   const columns = [
@@ -36,14 +38,40 @@ const Trash: React.FC = () => {
     }
   ];
 
-  const recover = () => {};
+  const { run: runRecover } = useRequest(
+    async () => {
+      for await (const id of selectedIds) {
+        await updateQuestionState(id, { isDeleted: false });
+      }
+    },
+    {
+      manual: true,
+      debounceWait: 500,
+      onSuccess: () => {
+        message.success('恢复成功');
+        refresh();
+        setSelectedIds([]);
+      }
+    }
+  );
 
-  const deleteQuestionnaire = () => {
+  const { run: runDeleteQuestion } = useRequest(deleteQuestion, {
+    manual: true,
+    onSuccess: () => {
+      message.success('删除成功');
+      refresh();
+      setSelectedIds([]);
+    }
+  });
+
+  const deleteThoroughly = () => {
     confirm({
       title: '确认彻底删除该问卷？',
       icon: <ExclamationCircleOutlined />,
       content: '删除以后不可以找回',
-      onOk: () => {}
+      onOk: () => {
+        runDeleteQuestion(selectedIds);
+      }
     });
   };
 
@@ -51,10 +79,10 @@ const Trash: React.FC = () => {
     <>
       <div style={{ marginBottom: '16px' }}>
         <Space>
-          <Button type="primary" disabled={selectedIds.length === 0} onClick={recover}>
+          <Button type="primary" disabled={selectedIds.length === 0} onClick={runRecover}>
             恢复
           </Button>
-          <Button danger disabled={selectedIds.length === 0} onClick={deleteQuestionnaire}>
+          <Button danger disabled={selectedIds.length === 0} onClick={deleteThoroughly}>
             彻底删除
           </Button>
         </Space>

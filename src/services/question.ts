@@ -25,3 +25,21 @@ export async function getQuestionList(opt: Partial<SearchOptions> = {}): Promise
   const data = await request.get(url, { params: opt });
   return data;
 }
+
+export async function updateQuestionState(id: string, opt: any): Promise<ResDataType> {
+  const url = `/api/question/${id}`;
+  const data = await request.patch(url, opt);
+  return data;
+}
+
+export async function duplicateQuestion(id: string): Promise<ResDataType> {
+  const url = `/api/question/duplicate/${id}`;
+  const data = await request.post(url);
+  return data;
+}
+
+export async function deleteQuestion(ids: string[]): Promise<ResDataType> {
+  const url = '/api/question';
+  const data = await request.delete(url, { data: { ids } });
+  return data;
+}

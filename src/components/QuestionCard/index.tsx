@@ -1,8 +1,17 @@
-import { Button, Divider, Popconfirm, Space, Tag } from 'antd';
+import { Button, Divider, Popconfirm, Space, Tag, message, Modal } from 'antd';
 import styles from './index.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import { CopyOutlined, DeleteOutlined, EditOutlined, LineChartOutlined, StarOutlined } from '@ant-design/icons';
+import {
+  CopyOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  LineChartOutlined,
+  StarOutlined
+} from '@ant-design/icons';
 import { useState } from 'react';
+import { useRequest } from 'ahooks';
+import { duplicateQuestion, updateQuestionState } from '../../services/question';
 
 interface QuestionCardProps {
   _id: string;
@@ -13,16 +22,49 @@ interface QuestionCardProps {
   createAt: string;
 }
 
+const { confirm } = Modal;
+
 const QuestionCard: React.FC<QuestionCardProps> = (props) => {
   const { _id, title, createAt, answerCount, isPublished, isStar } = props;
   const navigate = useNavigate();
   const [isStarState, setIsStarState] = useState(isStar);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const duplicate = () => {};
+  const { loading: changeStarLoading, run: runChangeStarState } = useRequest(updateQuestionState, {
+    manual: true,
+    onSuccess: (res) => {
+      setIsStarState(!isStarState);
+      message.success('已更新');
+    }
+  });
 
-  const deleteCard = () => {};
-  return (
+  const { loading: duplicateLoading, run: runDuplicateQuestion } = useRequest(duplicateQuestion, {
+    manual: true,
+    onSuccess: (res) => {
+      message.success('复制成功');
+      navigate(`/question/edit/${res.id}`);
+    }
+  });
+
+  const [isDeletedState, setIsDeletedState] = useState(false);
+  const { loading: deleteLoading, run: runDeleteQuestion } = useRequest(updateQuestionState, {
+    manual: true,
+    onSuccess: () => {
+      message.success('删除成功');
+      setIsDeletedState(true);
+    }
+  });
+
+  const deleteCard = () => {
+    confirm({
+      title: '确定删除该问卷',
+      icon: <ExclamationCircleOutlined />,
+      onOk: () => {
+        runDeleteQuestion(_id, { isDeleted: true });
+      }
+    });
+  };
+  return isDeletedState ? null : (
     <div className={styles.container}>
       <div className={styles.titleBox}>
         <div>
@@ -56,15 +98,25 @@ const QuestionCard: React.FC<QuestionCardProps> = (props) => {
         </div>
         <div className={styles.rightOpBox}>
           <Space>
-            <Button type="text" icon={<StarOutlined />} size="small">
+            <Button
+              type="text"
+              icon={<StarOutlined />}
+              size="small"
+              onClick={() => runChangeStarState(_id, { isStar: !isStarState })}
+              disabled={changeStarLoading}>
               {isStarState ? '取消标星' : '标星'}
             </Button>
-            <Popconfirm title="确定复制该问卷？" okText="确定" cancelText="取消" onConfirm={duplicate}>
+            <Popconfirm
+              title="确定复制该问卷？"
+              okText="确定"
+              cancelText="取消"
+              onConfirm={() => runDuplicateQuestion}
+              disabled={duplicateLoading}>
               <Button type="text" icon={<CopyOutlined />} size="small">
                 复制
               </Button>
             </Popconfirm>
-            <Button type="text" icon={<DeleteOutlined />} size="small" onClick={deleteCard}>
+            <Button type="text" icon={<DeleteOutlined />} size="small" onClick={deleteCard} disabled={deleteLoading}>
               删除
             </Button>
           </Space>
