@@ -10,6 +10,12 @@ export interface ComponentItem {
   props: ComponentItemProps;
 }
 
+export interface CompState {
+  selectedId: string;
+  componentList: Array<ComponentItem>;
+  copiedComponent: ComponentItem | null;
+}
+
 const INIT_STATE = {
   selectedId: '',
   componentList: [],
