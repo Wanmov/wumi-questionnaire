@@ -8,7 +8,7 @@ interface SearchOptions {
   pageSize: number;
 }
 
-export async function getQuestionCard(id: string): Promise<ResDataType> {
+export async function reqGetQuestionById(id: string): Promise<ResDataType> {
   const url = `/api/question/${id}`;
   const data = await request.get(url);
   return data;

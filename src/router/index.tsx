@@ -11,6 +11,7 @@ import Edit from '../pages/question/edit';
 import Stat from '../pages/question/stat';
 import NotFound from '../pages/notFount';
 import QuestionLayout from '../layouts/QuestionLayout';
+import { HOME_PATHNAME, LOGIN_PATHNAME, REGISTER_PATHNAME } from './constans';
 
 const router = createBrowserRouter([
   {
@@ -68,5 +69,10 @@ const router = createBrowserRouter([
     ]
   }
 ]);
+
+export function isntAuthPage(pathname: string) {
+  if ([HOME_PATHNAME, LOGIN_PATHNAME, REGISTER_PATHNAME].includes(pathname)) return true;
+  return false;
+}
 
 export default router;
