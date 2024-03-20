@@ -16,7 +16,9 @@ export const useGetQuestionData = () => {
   useEffect(() => {
     if (!data) return;
     const { title = '', desc = '', js = '', css = '', isPublished = false, componentList = [] } = data;
-    dispatch(setCompState({ componentList }));
+
+    let selectedId = componentList.length > 0 ? componentList[0].id : '';
+    dispatch(setCompState({ componentList, selectedId }));
   }, [data]);
   return { loading, error };
 };

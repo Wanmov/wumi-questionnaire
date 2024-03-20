@@ -1,5 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { produce } from 'immer';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { ComponentItemProps } from '../../components/QuestionComponents';
+import { insertNewComponent } from '../utils';
 
 export interface ComponentItem {
   fe_id: string; // 前端生成的 id ，服务端 Mongodb 不认这种格式，所以自定义一个 fe_id
@@ -16,7 +18,7 @@ export interface CompState {
   copiedComponent: ComponentItem | null;
 }
 
-const INIT_STATE = {
+const INIT_STATE: CompState = {
   selectedId: '',
   componentList: [],
   copiedComponent: null
@@ -26,11 +28,15 @@ export const compSlice = createSlice({
   name: 'components',
   initialState: INIT_STATE,
   reducers: {
-    setCompState: (state, action) => {
-      return action.payload;
-    }
+    setCompState: (state: CompState, action: PayloadAction<Partial<CompState>>) => {
+      return { ...state, ...action.payload };
+    },
+    addComponent: produce((draft: CompState, action: PayloadAction<ComponentItem>) => {
+      const newComponent = action.payload;
+      insertNewComponent(draft, newComponent);
+    })
   }
 });
 
-export const { setCompState } = compSlice.actions;
+export const { setCompState, addComponent } = compSlice.actions;
 export default compSlice.reducer;

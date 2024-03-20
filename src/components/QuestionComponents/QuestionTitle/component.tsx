@@ -4,6 +4,8 @@ export interface QuestionTitleProps {
   text?: string;
   level?: 1 | 2 | 3 | 4 | 5;
   textAlign?: 'start' | 'end' | 'left' | 'right' | 'center' | 'justify';
+  onChange?: (newProps: QuestionTitleProps) => void;
+  disabled?: boolean;
 }
 
 export const QuestionTitleDefaultProps: QuestionTitleProps = {

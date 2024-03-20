@@ -41,6 +41,12 @@ dependencies:
   axios:
     specifier: ^1.6.8
     version: 1.6.8
+  classnames:
+    specifier: ^2.5.1
+    version: 2.5.1
+  immer:
+    specifier: ^10.0.4
+    version: 10.0.4
   react:
     specifier: ^18.2.0
     version: 18.2.0

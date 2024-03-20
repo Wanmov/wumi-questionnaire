@@ -1,7 +1,10 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCompConfigByType } from '../../../../../components/QuestionComponents';
-import { ComponentItem } from '../../../../../store/modules/compReducer';
+import { ComponentItem, setCompState } from '../../../../../store/modules/compReducer';
 import { AppState } from '../../../../../store';
+import styles from './index.module.scss';
+import classnames from 'classnames';
+import { MouseEvent } from 'react';
 
 const generateComp = (componentItem: ComponentItem) => {
   const { type, props } = componentItem;
@@ -18,15 +21,24 @@ interface EditCanvasProps {
 }
 
 const EditCanvas: React.FC<EditCanvasProps> = ({ loading }) => {
-  const { componentList } = useSelector((state: AppState) => state.component);
+  const { componentList, selectedId } = useSelector((state: AppState) => state.component);
+  const dispatch = useDispatch();
+
+  const handleClick = (event: any, id: string) => {
+    event.stopPropagation();
+    dispatch(setCompState({ selectedId: id }));
+  };
 
   return (
-    <div>
+    <div className={styles.canvas}>
       {componentList.map((comp) => {
         const { fe_id } = comp;
         return (
-          <div key={fe_id}>
-            <div>{generateComp(comp)}</div>
+          <div
+            key={fe_id}
+            className={classnames(styles.componentWrapper, { [styles.selected]: fe_id === selectedId })}
+            onClick={(e) => handleClick(e, fe_id)}>
+            <div className={styles.component}>{generateComp(comp)}</div>
           </div>
         );
       })}
