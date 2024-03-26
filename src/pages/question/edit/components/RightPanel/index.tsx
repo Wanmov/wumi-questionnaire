@@ -12,7 +12,7 @@ enum TAB_KEYS {
 
 const RightPanel: React.FC = () => {
   const [activeKey, setActiveKey] = useState(TAB_KEYS.PROP_KEY);
-  const { selectedId } = useSelector((state: AppState) => state.component);
+  const { selectedId } = useSelector((state: AppState) => state.components.present);
 
   useEffect(() => {
     selectedId ? setActiveKey(TAB_KEYS.PROP_KEY) : setActiveKey(TAB_KEYS.SETTING_KEY);

@@ -8,7 +8,7 @@ const NoProp: React.FC = () => {
 
 const ComponentProps: React.FC = () => {
   const dispatch = useDispatch();
-  const { componentList, selectedId } = useSelector((state: AppState) => state.component);
+  const { componentList, selectedId } = useSelector((state: AppState) => state.components.present);
 
   const selectedComponent = componentList.find((comp) => comp.fe_id === selectedId);
   if (selectedComponent == null) return <NoProp />;

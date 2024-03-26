@@ -21,7 +21,7 @@ interface EditCanvasProps {
 }
 
 const EditCanvas: React.FC<EditCanvasProps> = ({ loading }) => {
-  const { componentList, selectedId } = useSelector((state: AppState) => state.component);
+  const { componentList, selectedId } = useSelector((state: AppState) => state.components.present);
   const dispatch = useDispatch();
 
   const handleClick = (event: any, id: string) => {

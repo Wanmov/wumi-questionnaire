@@ -12,7 +12,7 @@ import { BlockOutlined, CopyOutlined, DeleteOutlined, EyeInvisibleOutlined, Lock
 
 const EditToolbar: React.FC = () => {
   const dispatch = useDispatch();
-  const { selectedId, copiedComponent, componentList } = useSelector((state: AppState) => state.component);
+  const { selectedId, copiedComponent, componentList } = useSelector((state: AppState) => state.components.present);
 
   const selectedComponent = componentList.find((comp) => comp.fe_id === selectedId);
   const { isLocked } = selectedComponent || {};
@@ -61,3 +61,5 @@ const EditToolbar: React.FC = () => {
     </Space>
   );
 };
+
+export default EditToolbar;
