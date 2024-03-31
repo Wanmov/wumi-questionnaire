@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit';
 import { ComponentItemProps } from '../../components/QuestionComponents';
 import { getNextSelectedId, insertNewComponent } from '../utils';
+import { arrayMove } from '@dnd-kit/sortable';
 
 export interface ComponentItem {
   fe_id: string; // 前端生成的 id ，服务端 Mongodb 不认这种格式，所以自定义一个 fe_id
@@ -61,6 +62,11 @@ export const compSlice = createSlice({
       const curComp = componentList.find((comp) => comp.fe_id === fe_id);
       if (curComp) curComp.isHidden = isHidden;
     }),
+    changeCompTitle: produce((draft: CompState, action: PayloadAction<{ fe_id: string; title: string }>) => {
+      const { title, fe_id } = action.payload;
+      const curComp = draft.componentList.find((comp) => comp.fe_id === fe_id);
+      if (curComp) curComp.title = title;
+    }),
     toggleCompLocked: produce((draft: CompState, action: PayloadAction<{ fe_id: string }>) => {
       const { fe_id } = action.payload;
 
@@ -93,6 +99,12 @@ export const compSlice = createSlice({
         if (selectedIndex + 1 === componentList.length) return;
         draft.selectedId = componentList[selectedIndex + 1].fe_id;
       }
+    }),
+    moveComp: produce((draft: CompState, action: PayloadAction<{ oldIndex: number; newIndex: number }>) => {
+      const { componentList: curComponentList } = draft;
+      const { oldIndex, newIndex } = action.payload;
+
+      draft.componentList = arrayMove(curComponentList, oldIndex, newIndex);
     })
   }
 });
@@ -102,9 +114,11 @@ export const {
   addComponent,
   removeSelectedComp,
   changeCompHide,
+  changeCompTitle,
   toggleCompLocked,
   copySelectedComp,
   pasteCopiedComp,
-  selectComponent
+  selectComponent,
+  moveComp
 } = compSlice.actions;
 export default compSlice.reducer;
