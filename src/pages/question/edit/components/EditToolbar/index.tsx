@@ -8,7 +8,16 @@ import {
 } from '../../../../../store/modules/compReducer';
 import { AppState } from '../../../../../store';
 import { Button, Space, Tooltip } from 'antd';
-import { BlockOutlined, CopyOutlined, DeleteOutlined, EyeInvisibleOutlined, LockOutlined } from '@ant-design/icons';
+import {
+  BlockOutlined,
+  CopyOutlined,
+  DeleteOutlined,
+  EyeInvisibleOutlined,
+  LockOutlined,
+  RedoOutlined,
+  UndoOutlined
+} from '@ant-design/icons';
+import { ActionCreators } from 'redux-undo';
 
 const EditToolbar: React.FC = () => {
   const dispatch = useDispatch();
@@ -37,6 +46,14 @@ const EditToolbar: React.FC = () => {
     dispatch(pasteCopiedComp());
   };
 
+  const undo = () => {
+    dispatch(ActionCreators.undo());
+  };
+
+  const redo = () => {
+    dispatch(ActionCreators.redo());
+  };
+
   return (
     <Space>
       <Tooltip title="删除">
@@ -57,6 +74,12 @@ const EditToolbar: React.FC = () => {
       </Tooltip>
       <Tooltip title="粘贴">
         <Button shape="circle" icon={<BlockOutlined />} onClick={paste} disabled={copiedComponent == null}></Button>
+      </Tooltip>
+      <Tooltip title="撤销">
+        <Button shape="circle" icon={<UndoOutlined />} onClick={undo}></Button>
+      </Tooltip>
+      <Tooltip title="重做">
+        <Button shape="circle" icon={<RedoOutlined />} onClick={redo}></Button>
       </Tooltip>
     </Space>
   );
