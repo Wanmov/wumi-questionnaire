@@ -1,5 +1,6 @@
 import { Tabs } from 'antd';
 import ComponentLib from '../CompnentLib';
+import Layers from '../Layers';
 import { AppstoreOutlined, BarsOutlined } from '@ant-design/icons';
 
 const LeftPanel: React.FC = () => {
@@ -22,7 +23,7 @@ const LeftPanel: React.FC = () => {
           图层
         </span>
       ),
-      children: <div />
+      children: <Layers />
     }
   ];
   return <Tabs defaultActiveKey="componentLib" items={tabsItems} />;

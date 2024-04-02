@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ComponentProps from '../ComponentProps';
+import PageSetting from '../PageSetting';
 import { AppState } from '../../../../../store';
 import { FileTextOutlined, SettingOutlined } from '@ant-design/icons';
 import { Tabs } from 'antd';
@@ -37,7 +38,7 @@ const RightPanel: React.FC = () => {
           页面设置
         </span>
       ),
-      children: <div />
+      children: <PageSetting />
     }
   ];
 

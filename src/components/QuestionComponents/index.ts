@@ -1,8 +1,10 @@
 import QuestionCheckboxConfig, { QuestionCheckboxProps } from './QuestionCheckbox';
+import { QuestionCheckboxStatProps } from './QuestionCheckbox/StatComponent';
 import QuestionInfoConfig, { QuestionInfoProps } from './QuestionInfo';
 import QuestionInputConfig, { QuestionInputProps } from './QuestionInput';
 import QuestionParagraphConfig, { QuestionParagraphProps } from './QuestionParagraph';
 import QuestionRadioConfig, { QuestionRadioProps } from './QuestionRadio';
+import { QuestionRadioStatProps } from './QuestionRadio/StatComponent';
 import QuestionTextareaConfig, { QuestionTextareaProps } from './QuestionTextarea';
 import QuestionTitleConfig, { QuestionTitleProps } from './QuestionTitle';
 
@@ -14,12 +16,15 @@ export type ComponentItemProps = QuestionTitleProps &
   QuestionRadioProps &
   QuestionCheckboxProps;
 
+type ComponentStatProps = QuestionCheckboxStatProps & QuestionRadioStatProps;
+
 export type ComponentConfig = {
   title: string;
   type: string;
   Component: React.FC<ComponentItemProps>;
   PropsComponent: React.FC<ComponentItemProps>;
   defaultProps: ComponentItemProps;
+  StatComponent?: React.FC<ComponentStatProps>;
 };
 
 const componentConfList: ComponentConfig[] = [

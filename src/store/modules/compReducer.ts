@@ -37,6 +37,19 @@ export const compSlice = createSlice({
       const newComponent = action.payload;
       insertNewComponent(draft, newComponent);
     }),
+    changeCompProps: produce(
+      (draft: CompState, action: PayloadAction<{ fe_id: string; newProps: ComponentItemProps }>) => {
+        const { fe_id, newProps } = action.payload;
+
+        const curComp = draft.componentList.find((comp) => comp.fe_id === fe_id);
+        if (curComp) {
+          curComp.props = {
+            ...curComp.props,
+            ...newProps
+          };
+        }
+      }
+    ),
     removeSelectedComp: produce((draft: CompState) => {
       const { componentList = [], selectedId: removedId } = draft;
 
@@ -112,6 +125,7 @@ export const compSlice = createSlice({
 export const {
   setCompState,
   addComponent,
+  changeCompProps,
   removeSelectedComp,
   changeCompHide,
   changeCompTitle,

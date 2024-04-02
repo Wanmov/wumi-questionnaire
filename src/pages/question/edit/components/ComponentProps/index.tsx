@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../../../store';
-import { getCompConfigByType } from '../../../../../components/QuestionComponents';
+import { ComponentItemProps, getCompConfigByType } from '../../../../../components/QuestionComponents';
+import { changeCompProps } from '../../../../../store/modules/compReducer';
 
 const NoProp: React.FC = () => {
   return <div style={{ textAlign: 'center' }}>未选中组件</div>;
@@ -17,7 +18,10 @@ const ComponentProps: React.FC = () => {
   const componentConfig = getCompConfigByType(type);
   if (componentConfig == null) return <NoProp />;
 
-  const changeProps = () => {};
+  const changeProps = (newProps: ComponentItemProps) => {
+    const { fe_id } = selectedComponent;
+    dispatch(changeCompProps({ fe_id, newProps }));
+  };
 
   const { PropsComponent } = componentConfig;
   return <PropsComponent {...props} onChange={changeProps} />;
