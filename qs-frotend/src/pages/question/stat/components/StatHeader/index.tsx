@@ -25,7 +25,7 @@ const StatHeader: React.FC = () => {
 
   const LinkAndQRCodeElem = useMemo(() => {
     if (!isPublished) return null;
-    const url = `http://localhost:3000/question/${id}`;
+    const url = `http://localhost:3001/question/${id}`;
 
     // 二维码组件
     const QRCodeElem = (

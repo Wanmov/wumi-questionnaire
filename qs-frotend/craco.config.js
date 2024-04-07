@@ -1,3 +1,4 @@
+const path = require('path');
 module.exports = {
   webpack: {
     alias: {
@@ -7,11 +8,8 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        }
+        target: 'http://localhost:3001',
+        changeOrigin: true
       }
     }
   }

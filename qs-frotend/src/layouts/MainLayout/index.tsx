@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { HOME_PATHNAME, MANAGE_INDEX_PATHNAME } from '@/router/constans';
 import { AppState } from '@/store';
 import styles from './index.module.scss';
+import { useVerifyNav } from '@/hooks/useVerifyNav';
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
@@ -16,9 +17,10 @@ const MainLayout: React.FC = () => {
   const [pathName, setPathName] = useState(HOME_PATHNAME);
 
   useEffect(() => {
-    if (username) setPathName(MANAGE_INDEX_PATHNAME);
+    username ? setPathName(MANAGE_INDEX_PATHNAME) : setPathName(HOME_PATHNAME);
   }, [username]);
 
+  useVerifyNav();
   return (
     <Layout className={styles.container}>
       <Header className={styles.header}>
@@ -40,7 +42,7 @@ const MainLayout: React.FC = () => {
       <Content className={styles.mainContent}>
         <Outlet />
       </Content>
-      <Footer>Footer</Footer>
+      <Footer className={styles.footer}>乌米问卷</Footer>
     </Layout>
   );
 };

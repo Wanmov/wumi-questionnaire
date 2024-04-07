@@ -7,11 +7,14 @@ import { useRequest } from 'ahooks';
 import { login } from '../../services/user';
 import { useEffect } from 'react';
 import styles from './index.module.scss';
+import { useDispatch } from 'react-redux';
+import { setUserState } from '@/store/modules/userReducer';
 
 const { Title } = Typography;
 
 const Login: React.FC = () => {
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const username = localStorage.getItem('USERNAME');
@@ -24,9 +27,10 @@ const Login: React.FC = () => {
   const { run: runLogin } = useRequest(login, {
     manual: true,
     onSuccess: (res) => {
-      const { token = '' } = res;
+      const { token, username } = res;
       localStorage.setItem('USER_TOKEN', token);
       message.success('登录成功');
+      dispatch(setUserState({ username }));
       navigate(MANAGE_INDEX_PATHNAME);
     }
   });

@@ -2,23 +2,31 @@
   .header {
     display: flex;
     justify-content: space-between;
-    padding: 0 24px;
-    background: #fff;
+    padding: 0 1.5rem;
     box-shadow:
-      0 1px 2px 0 rgba(0, 0, 0, 0.03),
-      0 1px 6px -1px rgba(0, 0, 0, 0.02),
-      0 2px 4px 0 rgba(0, 0, 0, 0.02);
+      0 .0625rem .125rem 0 rgba(0, 0, 0, 0.03),
+      0 .0625rem .375rem -0.0625rem rgba(0, 0, 0, 0.02),
+      0 .125rem .25rem 0 rgba(0, 0, 0, 0.02);
+    .infoBox {
+      color: #f7f7f7;
+    }
     .logo {
-      display: flex;
-      align-items: center;
-      margin-left: 16px;
+      margin-left: 1rem;
+      line-height: 4.375rem;
       h3 {
         margin-bottom: 0;
+        color: #f7f7f7;
       }
     }
   }
 
   .mainContent {
-    min-height: calc(100vh - 64px - 65px);
+    min-height: calc(100vh - 4rem - 4.0625rem);
   }
+
+  .footer {
+    text-align: center;
+    background-color: #f7f7f7;
+    border-top: .0625rem solid #e8e8e8;
+}
 }

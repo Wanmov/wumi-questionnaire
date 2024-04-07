@@ -5,19 +5,20 @@ import { useEffect } from 'react';
 import { LOGIN_PATHNAME, MANAGE_INDEX_PATHNAME, REGISTER_PATHNAME } from '../router/constans';
 import { isntAuthPage } from '../router';
 
-export const useVerifyNav = (waitData: boolean) => {
+export const useVerifyNav = () => {
   const { pathname } = useLocation();
   const { username } = useSelector((state: AppState) => state.user);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (waitData) return;
-    if (username && [LOGIN_PATHNAME, REGISTER_PATHNAME].includes(pathname)) {
-      navigate(MANAGE_INDEX_PATHNAME);
+    if (username) {
+      if ([LOGIN_PATHNAME, REGISTER_PATHNAME].includes(pathname)) {
+        navigate(MANAGE_INDEX_PATHNAME);
+      }
       return;
     }
 
     if (isntAuthPage(pathname)) return;
-    navigate(LOGIN_PATHNAME);
+    else navigate(LOGIN_PATHNAME);
   }, [username, pathname]);
 };

@@ -21,7 +21,7 @@ const UserInfo: React.FC = () => {
   return username ? (
     <span>
       <UserOutlined />
-      {nickname}
+      {nickname || username}
       <Button type="link" onClick={handleQuitClick}>
         退出
       </Button>
