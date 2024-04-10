@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+import { Suspense, lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import Home from '../pages';
@@ -6,16 +6,16 @@ import Login from '../pages/login';
 import Register from '../pages/register';
 import ManageLayout from '../layouts/ManageLayout';
 import List from '../pages/manage/list';
-import Edit from '../pages/question/edit';
-import Stat from '../pages/question/stat';
+// import Edit from '../pages/question/edit';
+// import Stat from '../pages/question/stat';
 import Star from '../pages/manage/star';
 import Trash from '../pages/manage/trash';
 import NotFound from '../pages/notFount';
 import QuestionLayout from '../layouts/QuestionLayout';
 import { HOME_PATHNAME, LOGIN_PATHNAME, REGISTER_PATHNAME } from './constans';
 
-// const Edit = lazy(() => import('../pages/question/edit'));
-// const Stat = lazy(() => import('../pages/question/stat'));
+const Edit = lazy(() => import('../pages/question/edit'));
+const Stat = lazy(() => import('../pages/question/stat'));
 
 const router = createBrowserRouter([
   {
@@ -64,11 +64,19 @@ const router = createBrowserRouter([
     children: [
       {
         path: 'edit/:id',
-        element: <Edit />
+        element: (
+          <Suspense>
+            <Edit />
+          </Suspense>
+        )
       },
       {
         path: 'stat/:id',
-        element: <Stat />
+        element: (
+          <Suspense>
+            <Stat />
+          </Suspense>
+        )
       }
     ]
   }
